@@ -1,0 +1,231 @@
+import React,{useEffect, useState} from "react";
+import './index.css';
+import { getToken } from "../utils/authOperations";
+import trouser from "../../assets/trousers.jfif";
+import shirts from "../../assets/shirts.jfif";
+import jeans from "../../assets/jeans.jfif";
+import boxers from "../../assets/boxers.jfif";
+import jogger from "../../assets/joggers.jfif";
+import tshirt from "../../assets/Tshirts.jfif";
+import Wash from "../../assets/washing-machine.svg";
+import Press from "../../assets/ironing.svg";
+import Fold1 from "../../assets/btowel.svg";
+import Wash1 from '../../assets/wash1.svg';
+import Press1 from '../../assets/press1.svg';
+import Fold from '../../assets/fold.svg';
+import Pack1 from '../../assets/pack1.svg';
+import Pack from "../../assets/bleach.svg";
+import Others from "../../assets/others.jfif";
+import search from "../../assets/search.svg";
+import Footer from "../footer2/index";
+import Header from "../header2/index";
+import Sidebar1 from "../sidebar/index";
+
+function OrderCreate(){
+
+  const [item, setitem] = useState({name:"",quantity:0,actions:[],price:0});
+  const [action, setaction] = useState([])
+  // console.log(item)
+  const bill={"Washing":20,
+    "Pressing":15,"Folding":10,"Chemical-washing":25}
+  const [product, setproduct] = useState([]);
+  const [expression, setexpression] = useState(["-","-","-","-","-","-","-"])
+  const [cost, setcost] = useState(0);
+  const [reset, setreset] = useState(false)
+  
+  const [color,setcolor]=useState([false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]);
+  
+   
+  function change(e){
+    setaction([])
+    setcost(0)
+    setitem({...item,name:e.target.id,quantity:e.target.value})
+   
+  }
+  function  selectaction(e){
+    const arr=e.target.id.split(' ')
+    const changecolor=[...color]
+    changecolor[parseInt(arr[1])-1]=!changecolor[parseInt(arr[1])-1]
+    setcolor(changecolor)
+
+    const res=[...action]
+    res.push(arr[0])
+
+    setaction(res)
+    let washcost=cost
+    washcost=washcost+bill[arr[0]]
+    setcost(washcost)
+
+  }
+
+  
+
+  
+
+  
+    return(
+    <div className="container-fluid" Style="height:708px; width:1345px; ">
+      <Header/>
+      <div className="content">
+      {/*<Sidebar1/>*/}
+      <div className="right-content" Style="width:90%">
+        <div Style="display:flex; justify-content: space-around; padding:15px; width:1110;"><h6 Style="margin-right:700px">Create Order</h6>
+              <div Style="border-bottom:1px solid; width:150px; margin-right:120px">
+              <img src={search}alt="search" ></img>
+              </div>
+              
+        </div>
+        <div className="order-table" Style=" height:80%;" >
+          <table className="table  ">
+            <thead className="table-dark">
+              <tr >
+                <th Style=" font-weight: lighter;" scope="col">Product Types</th>
+                <th Style=" font-weight: lighter;" scope="col">Quantity</th>
+                <th Style=" font-weight: lighter;" scope="col">Wash Type</th>
+                <th Style=" font-weight: lighter;" scope="col">Price</th>
+                <th Style=" font-weight: lighter;" scope="col">Reset</th>
+              </tr>
+            </thead>
+            <tbody Style="text-align: center">
+              <tr className="row-height">
+                <th scope="row"><img className="sizealt" src={shirts} alt="shirts"/>  Shirts</th>
+                <td><input className="quantitybox" id="Shirts"  onChange={(e)=>{change(e)}}/></td>
+                <td>
+                  <tr>
+                    <td className="icons"><img id="Washing 1" src={color[0] ? Wash1 : Wash} alt="Wash" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Pressing 2" src={color[1] ? Press1 : Press} alt="Press" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Folding 3" src={color[2] ? Fold1 : Fold} alt="Fold" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Chemical-washing 4" src={color[3] ? Pack1 : Pack} alt="Pack" onClick={(e)=>{selectaction(e)}}/></td>
+                  </tr>
+                </td>
+                <td><button type="submit" class="btn btn-default" id="0" >{expression[0]}</button></td>
+                <td>{reset ? <button type="submit" class="btn btn-default" id="0" >reset</button> : null}</td>
+              </tr>
+  
+              <tr className="row-height">
+                <th scope="row"><img className="sizealt" src={tshirt} alt="shirts"/>  T Shirts</th>
+                <td><input className="quantitybox" id="Tshirts" name="Shirts" onChange={(e)=>{change(e)}}/></td>
+                <td>
+                  <tr>
+                    <td className="icons"><img id="Washing 5" src={color[4] ? Wash1 : Wash} alt="Wash" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Pressing 6" src={color[5] ? Press1 : Press} alt="Press" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Folding 7" src={color[6] ? Fold1 : Fold} alt="Fold" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Chemical-washing 8" src={color[7] ? Pack1 : Pack} alt="Pack" onClick={(e)=>{selectaction(e)}}/></td>
+                  </tr>
+                </td>
+                <td><button type="submit" class="btn btn-default" id="1" >{expression[1]}</button></td>
+                <td>{reset ? <button type="submit" class="btn btn-default" id="1" >reset</button> : null}</td>
+              </tr>
+
+               <tr className="row-height">
+                <th scope="row"><img className="sizealt" src={shirts} alt="shirts"/>  Shirts</th>
+                <td><input className="quantitybox" id="Shirts"  onChange={(e)=>{change(e)}}/></td>
+                <td>
+                  <tr>
+                    <td className="icons"><img id="Washing 1" src={color[0] ? Wash1 : Wash} alt="Wash" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Pressing 2" src={color[1] ? Press1 : Press} alt="Press" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Folding 3" src={color[2] ? Fold1 : Fold} alt="Fold" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Chemical-washing 4" src={color[3] ? Pack1 : Pack} alt="Pack" onClick={(e)=>{selectaction(e)}}/></td>
+                  </tr>
+                </td>
+                <td><button type="submit" class="btn btn-default" id="0" >{expression[0]}</button></td>
+                <td>{reset ? <button type="submit" class="btn btn-default" id="0" >reset</button> : null}</td>
+              </tr>
+  
+              <tr className="row-height">
+                <th scope="row"><img className="sizealt" src={tshirt} alt="shirts"/>  T Shirts</th>
+                <td><input className="quantitybox" id="Tshirts" name="Shirts" onChange={(e)=>{change(e)}}/></td>
+                <td>
+                  <tr>
+                    <td className="icons"><img id="Washing 5" src={color[4] ? Wash1 : Wash} alt="Wash" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Pressing 6" src={color[5] ? Press1 : Press} alt="Press" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Folding 7" src={color[6] ? Fold1 : Fold} alt="Fold" onClick={(e)=>{selectaction(e)}}/></td>
+                    <td className="icons"><img id="Chemical-washing 8" src={color[7] ? Pack1 : Pack} alt="Pack" onClick={(e)=>{selectaction(e)}}/></td>
+                  </tr>
+                </td>
+                <td><button type="submit" class="btn btn-default" id="1" >{expression[1]}</button></td>
+                <td>{reset ? <button type="submit" class="btn btn-default" id="1" >reset</button> : null}</td>
+              </tr>
+             
+    
+     
+  </tbody>
+</table>
+</div>
+<div Style="float:right; margin-right:125px; margin-top:-12px;">
+<button class="button button4" Style="transform:scale(0.8); font-size:14px;">Cancel</button>
+<button class="button button5 " data-bs-toggle="modal" data-bs-target="" Style="transform:scale(0.8); font-size:14px;">Proceed</button>
+ 
+
+</div>
+</div>
+
+</div>
+<Footer/>
+</div>
+
+    )
+}
+
+export default OrderCreate;
+
+
+----------------------------------------------
+import React from "react";
+import './createOrder.css';
+
+import search from "../../assets/search.svg";
+import Footer from "../footer2/index";
+import Header from "../header2/index";
+import Sidebar1 from "../sidebar/index";
+
+
+
+function OrderCreate(){
+
+    return(
+    <div className="container-fluid" Style="height:100%; width:100%;">
+      <Header/>
+      <div >
+
+        <div Style="display:inline; float:left;">
+         <Sidebar1/>
+        </div>
+        <div Style="display:inline; float:right; clear:both;">
+           <div className="order-table" Style=" height:300px;">
+            <table className="table">
+              <thead className="table-dark">
+                <tr>
+                  <th Style=" font-weight: lighter;" scope="col">Product Types</th>
+                  <th Style=" font-weight: lighter;" scope="col">Quantity</th>
+                  <th Style=" font-weight: lighter;" scope="col">Wash Type</th>
+                  <th Style=" font-weight: lighter;" scope="col">Price</th>
+                  <th Style=" font-weight: lighter;" scope="col">Reset</th>
+                </tr>
+              </thead>
+              <tbody Style="text-align: center">
+                
+       
+              </tbody>
+            </table>
+
+            </div>
+        </div>
+
+      </div>
+      
+      
+      
+       
+      
+      <Footer/>
+    </div>
+
+    )
+}
+
+export default OrderCreate;
+
+
+
+
